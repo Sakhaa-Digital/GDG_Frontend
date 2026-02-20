@@ -122,7 +122,7 @@ export default function UploadPolicy() {
     const [togglingId, setTogglingId] = useState(null);
     const fileInputRef = useRef(null);
     const { user } = useAuthStore()
-
+    const [policyName, setPolicyName] = useState(""); // new state
 
     const fetchPolicies = async () => {
         try {
@@ -142,22 +142,28 @@ export default function UploadPolicy() {
     const handleUpload = async () => {
         if (!selectedFile) return;
         setUploading(true);
+        const adminId = user?._id;
+
         const formData = new FormData();
         formData.append("file", selectedFile);
-        const adminId=user?._id
+
+        // policyName goes in the URL as a query param, NOT in FormData
+        const params = new URLSearchParams({ admin_id: adminId });
+        if (policyName.trim()) params.append("policyName", policyName.trim());
+
         try {
-            const res = await fetch(`${API_BASE}/policies/?admin_id=${encodeURIComponent(adminId)}`, {
+            const res = await fetch(`${API_BASE}/policies/?${params.toString()}`, {
                 method: "POST",
                 body: formData,
             });
             if (!res.ok) throw new Error();
             toast.success("Policy uploaded successfully!");
-            
             setSelectedFile(null);
+            setPolicyName("");
             setShowModal(false);
             fetchPolicies();
         } catch {
-            toast.error("Upload failed. Please try again.", "error");
+            toast.error("Upload failed. Please try again.");
         } finally {
             setUploading(false);
         }
@@ -360,15 +366,17 @@ export default function UploadPolicy() {
                         <h2 className="text-xl font-bold text-gray-800 mb-1">Upload Policy</h2>
                         <p className="text-sm text-gray-400 mb-6">Add a new document to the company vault</p>
 
-                        {/* <div className="mb-5">
-                            <label className="block text-xs font-semibold uppercase tracking-widest text-gray-400 mb-2">Admin ID</label>
+                        <div className="mb-5">
+                            <label className="block text-xs font-semibold uppercase tracking-widest text-gray-400 mb-2">
+                                Policy Name
+                            </label>
                             <input
-                                value={adminId}
-                                onChange={(e) => setAdminId(e.target.value)}
-                                placeholder="Enter admin ID"
+                                value={policyName}
+                                onChange={(e) => setPolicyName(e.target.value)}
+                                placeholder="Enter a name for the policy"
                                 className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition-all"
                             />
-                        </div> */}
+                        </div>
 
                         {selectedFile ? (
                             <div className="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 mb-6">

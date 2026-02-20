@@ -8,6 +8,7 @@ import Login from "./pages/Auth/Login.jsx";
 import ProtectedRoute from "./utils/ProtectedRoute.jsx";
 import Profile from "./pages/Profile.jsx";
 import NotFound from "./pages/NotFound/NotFound.jsx";
+import Config from "./pages/Config.jsx";
 function App() {
   return (
     <div>
@@ -22,7 +23,12 @@ function App() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/scan-now" element={<ScanNow />} />
         <Route path="/policy-vault" element={<UploadPolicy />} />
-        <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/config" element={<Config />} />
+
+
+
+          
       </Route>
 
       {/* Catch all */}
