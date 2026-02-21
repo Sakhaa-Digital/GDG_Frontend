@@ -298,7 +298,7 @@ export default function Dashboard() {
     useEffect(() => {
         setLoadingViolations(true);
         const skip = page * limit;
-        let url = `${API_BASE}/violation/?skip=${skip}&limit=${limit}&populate_rules=false`;
+        let url = `${API_BASE}/violation/?skip=${skip}&limit=${limit}&populate_rules=true`;
         if (selectedDataset) url += `&dataset_id=${selectedDataset}`;
         if (selectedSeverity) url += `&severity=${selectedSeverity}`;
         fetch(url)

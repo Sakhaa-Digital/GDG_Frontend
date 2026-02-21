@@ -9,6 +9,7 @@ import ProtectedRoute from "./utils/ProtectedRoute.jsx";
 import Profile from "./pages/Profile.jsx";
 import NotFound from "./pages/NotFound/NotFound.jsx";
 import Config from "./pages/Config.jsx";
+import DatasetManager from "./pages/UploadAndScan.jsx";
 function App() {
   return (
     <div>
@@ -25,8 +26,9 @@ function App() {
         <Route path="/policy-vault" element={<UploadPolicy />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/config" element={<Config />} />
+          <Route path="/upload-scan" element={<DatasetManager />} />
 
-
+          
 
           
       </Route>
